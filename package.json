@@ -1,0 +1,26 @@
+{
+  "name": "botmarcador",
+  "version": "1.0.0",
+  "description": "Bot scrapper del Marcador WPT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.0",
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "^0.12.3",
+    "ffmpeg-static": "^4.3.0",
+    "node-html-to-image": "^3.1.0",
+    "node-phantom": "^0.2.5",
+    "opusscript": "0.0.8",
+    "phantomjs-prebuilt": "^2.1.16",
+    "puppeteer": "^8.0.0",
+    "request": "^2.88.2",
+    "scrape-it": "^5.3.1",
+    "svg-png-converter": "0.0.9"
+  }
+}
