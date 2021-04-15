@@ -4,7 +4,7 @@ const Commando = require('discord.js-commando')
 const fs = require('fs')
 const say = require('say');
 const jugadoresAudios = require("../../Resources/jsonAudios/jugadoresAudios.json");
-const genericosAudios = require("../../Resources/jsonAudios/jugadoresAudios.json");
+const genericosAudios = require("../../Resources/jsonAudios/genericosAudios.json");
 
 let marcadores = {
     marcador1 : {
@@ -17,7 +17,7 @@ let marcadores = {
     },
     marcador2 : {
         liveInterval: null,
-        urlScore: "https://wpt.puntuate.com/m0.aspx?ct=0",
+        urlScore: "https://wpt.puntuate.com/m0.aspx?ct=1",
         puntosPareja1: 0,
         puntosPareja2: 0,
         jugadores1:null,
