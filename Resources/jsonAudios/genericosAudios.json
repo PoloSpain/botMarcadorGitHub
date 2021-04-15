@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "AUDIOINICIO",
+        "audio": "audioInicio.m4a"                    
+    },
+    {
+        "nombre": "AUDIOCONTRA",
+        "audio": "audioContra.m4a"                    
+    },
+    {
+        "nombre": "AUDIOPUNTODE",
+        "audio": "BeatrizGonzalezLargo.m4a"                    
+    },
+    {
+        "nombre": "AUDIOMARCADOR1",
+        "audio": "Marcador1.m4a"                    
+    },
+    {
+        "nombre": "AUDIOMARCADOR2",
+        "audio": "Marcador2.m4a"                    
+    }           
+]

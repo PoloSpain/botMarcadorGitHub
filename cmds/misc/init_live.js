@@ -3,6 +3,8 @@ const path = require('path')
 const Commando = require('discord.js-commando')
 const fs = require('fs')
 const say = require('say');
+const jugadoresAudios = require("../../Resources/jsonAudios/jugadoresAudios.json");
+const genericosAudios = require("../../Resources/jsonAudios/jugadoresAudios.json");
 
 let marcadores = {
     marcador1 : {
@@ -26,7 +28,7 @@ let marcadores = {
 module.exports = class InitLiveCommand extends Commando.Command {
     constructor(client){
         super(client, {
-            name:'initlivelocal',
+            name:'initlive',
             group: 'misc',
             memberName:'initlive',
             description:'init live score',
@@ -43,54 +45,47 @@ module.exports = class InitLiveCommand extends Commando.Command {
                 }
             ]
         })
-    }
+    }   
 
     async run(message, {status, Marcador}){
         message.reply(`Live Marcador ${Marcador} ${status}`);
-
-        const { voice } = message.member
-
-        if (!voice.channelID){
-            message.reply('You must be in a voice channel')
-            return
-        }
-
-        this.vozcelestial(voice.channel,"Esta apunto de empezar el partido: ");
-        this.vozcelestial(voice.channel,"Alejandra Salazar ");
-               /* this.vozcelestial(voice.channel,"y");
-                this.vozcelestial(voice.channel,"Gemma Triay");
-                this.vozcelestial(voice.channel,"contra");
-                this.vozcelestial(voice.channel,"Lucia Sainz");
-                this.vozcelestial(voice.channel,"y");
-                this.vozcelestial(voice.channel,"Bea Gonzalez");*/
 
         if (status.toUpperCase() === 'ON'){
             if (Marcador === '1') {
                 marcadores.marcador1.liveInterval = setInterval( () => {
                     scraper(marcadores.marcador1.urlScore).then( marcadorResult => {
                         
-                        /*if (marcadores.marcador1.puntosPareja1 !== marcadorResult.enjuego.pareja1 ||
-                            marcadores.marcador1.puntosPareja2 !== marcadorResult.enjuego.pareja2){*/
+                        marcadorResult.jugadores.pareja1.jugador1 = "ALEJANDRA SALAZAR"
+                        marcadorResult.jugadores.pareja1.jugador2 = "GEMMA TRIAY"
+                        marcadorResult.jugadores.pareja2.jugador1 = "LUCIA SAINZ"
+                        marcadorResult.jugadores.pareja2.jugador2 = "BEATRIZ GONZALEZ"    
+
+                        marcadorResult.enjuego.pareja1 = "15"
+                        marcadorResult.enjuego.pareja2 = "0"
+
+                        if (marcadores.marcador1.puntosPareja1 !== marcadorResult.enjuego.pareja1 ||
+                            marcadores.marcador1.puntosPareja2 !== marcadorResult.enjuego.pareja2){
                                 this.tratamientoJsonMarcadorToText(Marcador, marcadorResult, message);
                                 this.tratamientoJsonMarcadorToVoice(Marcador, marcadorResult, message, marcadores.marcador1);
                                 
                                 marcadores.marcador1.puntosPareja1 = marcadorResult.enjuego.pareja1;
                                 marcadores.marcador1.puntosPareja2 = marcadorResult.enjuego.pareja2;
-                            /*}                           */
+                            }        
                         
+                            console.log(marcadores);                            
                     }).catch(console.error); 
                 }, 60000);
             } else if (Marcador === '2'){
                 marcadores.marcador2.liveInterval = setInterval(() => {
                     scraper(marcadores.marcador2.urlScore).then( marcadorResult => {
-                        /*if (marcadores.marcador2.puntosPareja1 !== marcadorResult.enjuego.pareja1 ||
-                            marcadores.marcador2.puntosPareja2 !== marcadorResult.enjuego.pareja2){*/
+                        if (marcadores.marcador2.puntosPareja1 !== marcadorResult.enjuego.pareja1 ||
+                            marcadores.marcador2.puntosPareja2 !== marcadorResult.enjuego.pareja2){
                                 this.tratamientoJsonMarcadorToText(Marcador, marcadorResult, message);
                                 this.tratamientoJsonMarcadorToVoice(Marcador, marcadorResult, message, marcadores.marcador2);
 
                                 marcadores.marcador2.puntosPareja1 = marcadorResult.enjuego.pareja1;
                                 marcadores.marcador2.puntosPareja2 = marcadorResult.enjuego.pareja2;
-                           /* }      */                       
+                            }                            
                     }).catch(console.error); 
                 }, 60000);
             }           
@@ -132,68 +127,84 @@ module.exports = class InitLiveCommand extends Commando.Command {
             return
         }
 
-        let stringAudio = ''; 
+        let audioMarcador = ''; 
         
         if (marcador === '1'){
-            stringAudio = 'Marcador1.m4a'
+            audioMarcador = this.encontrarAudioGenerico('AUDIOMARCADOR1');
         } else {
-            stringAudio = 'Marcador2.m4a'
+            audioMarcador = this.encontrarAudioGenerico('AUDIOMARCADOR2');
         }
                 
-        if ((marcadores.jugadores1 !== formateoPareja(marcadorResult.jugadores.pareja1)) ||
-            (marcadores.jugadores2 !== formateoPareja(marcadorResult.jugadores.pareja2)))
+        if ((marcadores.jugadores1 !== this.formateoPareja(marcadorResult.jugadores.pareja1)) ||
+            (marcadores.jugadores2 !== this.formateoPareja(marcadorResult.jugadores.pareja2)))
             {
-                let audioInicio = encontrarAudioGenerico('audioInicio');
-                let audioPareja1Jugador1 = encontrarAudioJugador(marcadorResult.jugadores.pareja1.jugador1);
-                let audioPareja1Jugador2 = encontrarAudioJugador(marcadorResult.jugadores.pareja1.jugador2);
-                let audioPareja2Jugador1 = encontrarAudioJugador(marcadorResult.jugadores.pareja2.jugador1);
-                let audioPareja2Jugador2 = encontrarAudioJugador(marcadorResult.jugadores.pareja2.jugador2);
-
-                voice.channel.join().then((connection) =>{
-                    connection.play(path.join(__dirname, audioInicio))
-                    connection.play(path.join(__dirname, audioPareja1Jugador1))
-                    connection.play(path.join(__dirname, audioPareja1Jugador2))
-                    connection.play(path.join(__dirname, audioPareja2Jugador1))
-                    connection.play(path.join(__dirname, audioPareja2Jugador2))                    
+                let audioInicio = this.encontrarAudioGenerico('AUDIOINICIO');
+                let audioContra = this.encontrarAudioGenerico('AUDIOCONTRA');
+                let audioPareja1Jugador1 = this.encontrarAudioJugadorLargo(marcadorResult.jugadores.pareja1.jugador1);
+                let audioPareja1Jugador2 = this.encontrarAudioJugadorLargo(marcadorResult.jugadores.pareja1.jugador2);
+                let audioPareja2Jugador1 = this.encontrarAudioJugadorLargo(marcadorResult.jugadores.pareja2.jugador1);
+                let audioPareja2Jugador2 = this.encontrarAudioJugadorLargo(marcadorResult.jugadores.pareja2.jugador2);
+                
+                voice.channel.join().then(async (connection) =>{
+                    await this.reproducirAudio(connection, audioInicio)                    
+                    await this.reproducirAudio(connection, audioPareja1Jugador1)
+                    await this.reproducirAudio(connection, audioPareja1Jugador2)
+                    await this.reproducirAudio(connection, audioContra)
+                    await this.reproducirAudio(connection, audioPareja2Jugador1)
+                    await this.reproducirAudio(connection, audioPareja2Jugador2)                                        
                 })
-
-                marcadores.jugadores1 = formateoPareja(marcadorResult.jugadores.pareja1);
-                marcadores.jugadores2 = formateoPareja(marcadorResult.jugadores.pareja2);
+                
+                marcadores.jugadores1 = this.formateoPareja(marcadorResult.jugadores.pareja1);
+                marcadores.jugadores2 = this.formateoPareja(marcadorResult.jugadores.pareja2);
             } else {
-                let audioY = encontrarAudioGenerico('audioY');                
+                let audioPuntoDe = this.encontrarAudioGenerico('AUDIOPUNTODE');                                 
                 let audioJugador1;
                 let audioJugador2;
 
-                if (marcadores.jugadores1 !== formateoPareja(marcadorResult.jugadores.pareja1)){
-                    audioJugador1 = encontrarAudioJugador(marcadorResult.jugadores.pareja1.jugador1);
-                    audioJugador2 = encontrarAudioJugador(marcadorResult.jugadores.pareja1.jugador2);                    
+                if (marcadores.puntosPareja1 !== this.formateoPareja(marcadorResult.enjuego.pareja1)){
+                    audioJugador1 = this.encontrarAudioJugadorCorto(marcadorResult.jugadores.pareja1.jugador1);
+                    audioJugador2 = this.encontrarAudioJugadorCorto(marcadorResult.jugadores.pareja1.jugador2);                    
                 } else {
-                    audioJugador1 = encontrarAudioJugador(marcadorResult.jugadores.pareja2.jugador1);
-                    audioJugador2 = encontrarAudioJugador(marcadorResult.jugadores.pareja2.jugador2);
+                    audioJugador1 = this.encontrarAudioJugadorCorto(marcadorResult.jugadores.pareja2.jugador1);
+                    audioJugador2 = this.encontrarAudioJugadorCorto(marcadorResult.jugadores.pareja2.jugador2);
                 }
 
-                voice.channel.join().then((connection) =>{
-                    connection.play(path.join(__dirname, audioPuntoDe))
-                    connection.play(path.join(__dirname, audioJugador1))
-                    connection.play(path.join(__dirname, audioY))
-                    connection.play(path.join(__dirname, audioJugador2))                   
+                voice.channel.join().then(async (connection) =>{
+                    await this.reproducirAudio(connection, audioPuntoDe)     
+                    await this.reproducirAudio(connection, audioJugador1)     
+                    await this.reproducirAudio(connection, audioJugador2)                                          
                 })
             }               
+    }
+
+    reproducirAudio = async (connection, stringAudio) => {
+        console.log(stringAudio);
+        const dispatcher = connection.play(path.join(__dirname, stringAudio))
+
+        await new Promise(resolve => dispatcher.on('finish',resolve));                  
     }
 
     formateoPareja(pareja){
         return `**${pareja.jugador1}/${pareja.jugador2}**`
     }
 
-
     encontrarAudioGenerico(nombreAudio){
-
+        let jugador = genericosAudios.find( record => record.nombre === nombreAudio)        
+     
+        return jugador.audio;
     }
 
-    encontrarAudioJugador(nombreJugador) {
-
+    encontrarAudioJugadorLargo(nombreJugador) {
+        let jugador = jugadoresAudios.find( record => record.nombre === nombreJugador)        
+     
+        return jugador.audios.largo;
     }
 
+    encontrarAudioJugadorCorto(nombreJugador) {
+        let jugador = jugadoresAudios.find( record => record.nombre === nombreJugador)        
+     
+        return jugador.audios.corto;
+    }
 
     vozcelestial(voiceChannel, text) {          
         if (!fs.existsSync('./temp')){

@@ -1,0 +1,30 @@
+[
+    {
+        "nombre": "ALEJANDRA SALAZAR",
+        "audios": {
+            "largo": "alejandraSalazarLargo.m4a",
+            "corto": "alejandraSalazarCorto.m4a"
+        }
+    },
+    {
+        "nombre": "GEMMA TRIAY",
+        "audios": {
+            "largo": "GemmaTriayLargo.m4a",
+            "corto": "alejandraSalazarCorto.m4a"
+        }
+    },
+    {
+        "nombre": "LUCIA SAINZ",
+        "audios": {
+            "largo": "LuciaSainzLargo.m4a",
+            "corto": "alejandraSalazarCorto.m4a"
+        }
+    },
+    {
+        "nombre": "BEATRIZ GONZALEZ",
+        "audios": {
+            "largo": "BeatrizGonzalezLargo.m4a",
+            "corto": "alejandraSalazarCorto.m4a"
+        }
+    }
+]

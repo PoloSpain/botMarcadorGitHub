@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 
-function run (marcadorParam, url) {
+function run (url) {
     return new Promise(async (resolve, reject) => {
         try {
             const browser = await puppeteer.launch();
@@ -48,12 +48,12 @@ function run (marcadorParam, url) {
                     },
                     jugadores : {
                         pareja1 : {
-                            pareja1a : pareja1aVal,
-                            pareja1b : pareja1bVal
+                            jugador1 : pareja1aVal,
+                            jugador2 : pareja1bVal
                         },
                         pareja2: {
-                            pareja2a : pareja2aVal,
-                            pareja2b : pareja2bVal
+                            jugador1 : pareja2aVal,
+                            jugador2 : pareja2bVal
                         }
                     },
                     sets : {
