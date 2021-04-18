@@ -1,18 +1,19 @@
 const puppeteer = require('puppeteer')
-
-function run (url) {
+const path = require('path')
+function run (marcador, url) {
     return new Promise(async (resolve, reject) => {
         try {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();           
             
-            await page.goto(url);           
-            await page.waitForTimeout(3000);
+            await page.goto(url);       
+            await page.screenshot({path: path.join(__dirname,`../Resources/screenshoots/Marcador${marcador}.png`)});    
+            await page.waitForTimeout(3000);            
 
             let urls = await page.evaluate(() => {
-                let results = [];                
-
-                console.log(document)
+                let results = [];    
+                
+                document.querySelectorAll('#divMarcador')[0].style.display = 'block';
                 let patrocinadorVal =  document.querySelectorAll('#textoTrama1')[0].innerText;
                 let ciudadVal =  document.querySelectorAll('#textoTrama2')[0].innerText;
                 let modalidadVal =  document.querySelectorAll('#textoTrama3')[0].innerText;
@@ -77,7 +78,8 @@ function run (url) {
                 })
 
                 return results[0];
-            })
+            })           
+
             browser.close();
             return resolve(urls);
         } catch (e) {

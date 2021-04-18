@@ -1,5 +1,5 @@
 {
-    "BOT_TOKEN":"[BOT TOKEN]",
+    "BOT_TOKEN":"[TOKEN_Id]",
     "prefix": "!",
     "ownerId": "770703875787063326"
 }

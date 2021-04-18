@@ -21,10 +21,7 @@ client.on('ready', () => {
         ['misc','misc commands']        
     ])
     .registerDefaults()
-    .registerCommandsIn(path.join(__dirname,'cmds'))
-
-
-   
+    .registerCommandsIn(path.join(__dirname,'cmds'))   
 })
 
 client.login(config.BOT_TOKEN)
