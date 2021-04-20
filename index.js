@@ -18,7 +18,7 @@ client.on('ready', () => {
     
     client.registry
     .registerGroups([
-        ['misc','misc commands']        
+        ['marcadores','marcadores']         
     ])
     .registerDefaults()
     .registerCommandsIn(path.join(__dirname,'cmds'))   

@@ -1,5 +1,7 @@
 {
-    "BOT_TOKEN":"[TOKEN_Id]",
-    "prefix": "!",
-    "ownerId": "770703875787063326"
+    "BOT_TOKEN":"[TOKEN_ID]",
+    "prefix": "?",
+    "urlMarcador1": "https://wpt.puntuate.com/m0.aspx?ct=0",
+    "urlMarcador2": "https://wpt.puntuate.com/m1.aspx?ct=0",
+    "urlMarcador3": "https://wpt.puntuate.com/m2.aspx?ct=0"
 }

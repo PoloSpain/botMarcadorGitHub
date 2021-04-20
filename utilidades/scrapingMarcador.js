@@ -3,17 +3,24 @@ const path = require('path')
 function run (marcador, url) {
     return new Promise(async (resolve, reject) => {
         try {
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox','--disable-setuid-sandbox']
+              })
             const page = await browser.newPage();           
             
-            await page.goto(url);       
-            await page.screenshot({path: path.join(__dirname,`../Resources/screenshoots/Marcador${marcador}.png`)});    
-            await page.waitForTimeout(3000);            
-
+            await page.goto(url);                   
+            await page.waitForTimeout(3000);              
+            
+            await page.screenshot(
+                {                    
+                    path: path.join(__dirname,`../Resources/screenshoots/Marcador${marcador}.png`),
+                    fullPage: true
+                });    
+            
             let urls = await page.evaluate(() => {
                 let results = [];    
                 
-                document.querySelectorAll('#divMarcador')[0].style.display = 'block';
                 let patrocinadorVal =  document.querySelectorAll('#textoTrama1')[0].innerText;
                 let ciudadVal =  document.querySelectorAll('#textoTrama2')[0].innerText;
                 let modalidadVal =  document.querySelectorAll('#textoTrama3')[0].innerText;
