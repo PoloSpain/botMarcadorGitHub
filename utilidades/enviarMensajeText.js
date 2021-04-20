@@ -30,8 +30,49 @@ function run (marcador, marcadorResult, message, client) {
         }
     })
 }
-
-
-
-
 module.exports = run
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+tratamientoJsonMarcadorToText(message){
+
+            const logo = 'https://yt3.ggpht.com/ytc/AAUvwng-TdmqhS19tic2CtMBp1tdg5RUJraADJ5NhJWTcw=s900-c-k-c0x00ffffff-no-rj'
+            const logo1 ='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBNtuMBQfpYIRmFfQhAvDQCx9swVW6EdAJXQ&usqp=CAU'
+            const embed = new Discord.MessageEmbed()
+            .setTitle('Marcador en directo!')
+            .setDescription('__Torneo Alicante__')
+            .setColor('#00AAFF')
+            .setThumbnail(logo1)
+            .setFooter('Marcador World Padel Tour', logo)
+            .addFields(
+                {
+                    name: 'Pareja 1',
+                    value: 'Alejandra Salazar/Gemma Triay',
+                    inline: false,
+                },
+                {
+                    name: 'Pareja 2',
+                    value: 'Lucía Sainz/Bea Gonzalez',
+                    inline: false,
+                },{
+                    name: 'Puntuación',
+                    value: '__P 1__\t**6**\t5 **15**\n__P 2__\t4\t4 **30**',
+                    inline: false,
+                },
+                {
+                    name: 'Pareja ganadora',
+                    value: '**Alejandra Salazar/Gemma Triay** \n**6-4/7-6(7-5)**',
+                    inline: false,
+                },
+            )
+            .addField('👇👇👇', '[Más marcadores aquí](https://www.worldpadeltour.com/marcador/)',true)
+            .setTimestamp()
+
+            
+           // message.reply(embed)
+            message.channel.send(embed)
+            .then(msg => {
+                msg.delete({ timeout: 8000 /*time unitl delete in milliseconds*/});
+            })
+            .catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+    }
